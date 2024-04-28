@@ -23,16 +23,16 @@
 - Phân tích và thống kê - so sánh khối lượng giảng dạy giữa 2 giảng viên cùng 1 kì, so sánh khối lượng giảng dạy của giảng viên giữa 2 học kì của giảng viên đó.
 - Xác nhận và thông báo - giảng viên xác nhận khối lượng đã dạy - gửi yêu cầu chỉnh sửa nếu có sai sót đối với thông kê - hệ thống thông báo của giảng lý cho giảng viên.
 
-## 🛠️ Technologies Used
+## 🛠️ Công nghệ sử dụng
 - **PHP**
 - Datatables
 - Toastr
 - bootstrap5
 - Select2
-- ### Database
+- ### Cơ sở dữ liệu
 - MYSQL Server 
 
-### Tools
+### Công cụ
 - VS Code 
 - Git
 - Excel
