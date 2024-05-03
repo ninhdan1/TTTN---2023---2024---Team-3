@@ -1,5 +1,11 @@
 <?php
-session_start();
+
+// Start the session if it's not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 if (!isset($_SESSION['login'])) {
     header("Location: /view/login.php");
     exit();
@@ -21,6 +27,7 @@ if (!isset($_SESSION['login'])) {
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
+
         <!-- jQuery and Bootstrap Bundle (includes Popper) -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -33,15 +40,20 @@ if (!isset($_SESSION['login'])) {
         <!-- Custom styles for this template-->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <!-- Css Toastr -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <!-- Css DataTables -->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
+        <link ref="stylesheet" href="https://cdn.datatables.net/select/2.0.1/css/select.dataTables.css">
         <link ref="stylesheet" href="https://cdn.datatables.net/responsive/3.0.1/css/responsive.dataTables.css">
+        <link ref="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css">
+        <link ref="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 
-
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
     </head>
 
@@ -51,7 +63,8 @@ if (!isset($_SESSION['login'])) {
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <?php require __DIR__ . '/../components/sidebar.php' ?>
+            <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
+            require VIEW_PATH . 'components/sidebar.php' ?>
             <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
@@ -61,13 +74,16 @@ if (!isset($_SESSION['login'])) {
                 <div id="content">
 
                     <!-- Topbar -->
-                    <?php require __DIR__ . '/../components/navbar.php' ?>
+
+                    <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
+                    require VIEW_PATH . 'components/navbar.php' ?>
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid">
 
-                        <?php echo isset($content) ? $content : (require __DIR__ . '/../components/content-admin.php'); ?>
+                        <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
+                        echo isset($content) ? $content : (require VIEW_PATH . 'components/content-admin.php'); ?>
 
                     </div>
                     <!-- /.container-fluid -->
@@ -75,7 +91,8 @@ if (!isset($_SESSION['login'])) {
                 </div>
                 <!-- End of Main Content -->
 
-                <?php require __DIR__ . '/../components/footer.php' ?>
+                <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
+                require VIEW_PATH . 'components/footer.php' ?>
 
             </div>
 
@@ -83,36 +100,17 @@ if (!isset($_SESSION['login'])) {
         <!-- End of Page Wrapper -->
 
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+        <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
+        require VIEW_PATH . 'components/button-page-to-top.php' ?>
+
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="../../logout.php">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
+        require VIEW_PATH . 'components/modal-logout.php' ?>
 
         <!-- Bootstrap core JavaScript-->
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
 
         <!-- Core plugin JavaScript-->
         <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -124,21 +122,46 @@ if (!isset($_SESSION['login'])) {
         <script src="/js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="/vendor/chart.js/Chart.min.js"></script>
+        <!-- <script src="/vendor/chart.js/Chart.min.js"></script> -->
 
         <!-- Page level custom scripts -->
-        <script src="/js/demo/chart-area-demo.js"></script>
-        <script src="/js/demo/chart-pie-demo.js"></script>
+        <!-- <script src="/js/demo/chart-area-demo.js"></script>
+        <script src="/js/demo/chart-pie-demo.js"></script> -->
+
         <!-- Toastr JS -->
 
 
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        </script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js">
+
+        </script> -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <!-- DataTables JS -->
-        <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+        <!-- <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script> -->
         <script src="https://cdn.datatables.net/responsive/3.0.1/js/dataTables.responsive.js"></script>
         <script src="https://cdn.datatables.net/responsive/3.0.1/js/responsive.dataTables.js"></script>
-        <script src="/js/datatables/datatables.js"></script>
 
+        <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+        <script src="https://cdn.datatables.net/select/2.0.1/js/dataTables.select.js"></script>
+        <script src="https://cdn.datatables.net/select/2.0.1/js/select.dataTables.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+
+
+        <script src="/js/datatables/datatables-giangday.js"></script>
+        <script src="/js/datatables/datatables-monhoc.js"></script>
+        <script src="/js/datatables/datatables-thongke.js"></script>
+        <script src="/js/datatables/datatables-giangvien.js"></script>
+        <script src="/js/datatables/datatables-taikhoan.js"></script>
 
 
     </body>

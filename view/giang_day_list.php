@@ -3,7 +3,7 @@
 $content = '
 
 <!-- Modal xác nhận -->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirmModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,8 +22,8 @@ $content = '
 </div>
 
 
-
-<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal Update giảng dạy -->
+<div class="modal fade" id="EditModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -35,6 +35,11 @@ $content = '
       <form id="updateForm" class="was-validated">
       <div class="row">
       <div class="col-md-6">
+      <div class="mb-3">
+         
+      <label for="id" class="col-form-label">ID:</label>
+      <input type="text" class="form-control" id="id" readonly>
+    </div>
           <div class="mb-3">
          
             <label for="ma_lopmonhoc" class="col-form-label">Mã lớp môn học:</label>
@@ -49,12 +54,12 @@ $content = '
             <input type="text" class="form-control" id="tiet_batdau" readonly>
         </div>
         <div class="mb-3">
-        <label for="ma_gv" class="col-form-label">Mã giảng viên:</label>
+        <label for="ma_gv" class="col-form-label">Giảng viên:</label>
         <input type="text" class="form-control" id="ma_gv" readonly>
       </div>
 
         <div class="mb-3">
-        <label for="ma_monhoc" class="col-form-label">Mã môn học:</label>
+        <label for="ma_monhoc" class="col-form-label">Môn học:</label>
         <input type="text" class="form-control" id="ma_monhoc" readonly>
       </div>
         <div class="mb-3">
@@ -67,21 +72,22 @@ $content = '
             <input type="text" class="form-control" id="so_tietmonhoc" readonly>
         </div>
 
-          <div class="mb-3">
-            <label for="ten_phong" class="col-form-label">Tên phòng:</label>
-            <input type="text" class="form-control" id="ten_phong" readonly>
-          </div>
+         
          
           </div>
 
           <div class="col-md-6">
           <div class="mb-3 has-validation">
           <label for="si_solop" class="col-form-label">Sĩ số lớp:</label>
-          <input type="number" class="form-control" id="si_solop" pattern="[0-9]+" title="Vui lòng nhập số nguyên dương">
+          <input type="number" class="form-control" id="si_solop" required pattern="[0-9]+" title="Vui lòng nhập số nguyên dương">
           <div class="invalid-feedback">
           Sĩ số lớp không được để trống và phải là số nguyên dương!
       </div>
         </div>
+        <div class="mb-3">
+        <label for="ten_phong" class="col-form-label">Tên phòng:</label>
+        <input type="text" class="form-control" id="ten_phong" readonly>
+      </div>
           <div class="mb-3">
             <label for="ma_lophoc" class="col-form-label">Mã lớp học:</label>
             <input type="text" class="form-control" id="ma_lophoc" readonly>
@@ -112,8 +118,8 @@ $content = '
         </form> 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
-    <button type="submit" class="btn btn-warning"  form="updateForm">Cập nhật</button>
+    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><strong>Đóng</strong></button>
+    <button type="submit" class="btn btn-warning"  form="updateForm"> <strong>Xác nhận</strong></button>
     <!-- Thêm các nút chức năng khác nếu cần -->
 </div>
 </div>
@@ -121,13 +127,20 @@ $content = '
 </div>
 
 
+<!-- Table giảng dạy -->
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Giảng dạy</h1>
+    
+</div>
+<div class="col">
+<span class="badge rounded-pill text-bg-danger mb-3"> <a href="/view/admin/layout-admin.php" class="text-decoration-none text-light"> Trang chủ </a></span>
+<span class="badge rounded-pill text-bg-light mb-3"> <strong> <i class="bi bi-caret-right-fill"></i> </strong> </span>
+<span class="badge rounded-pill text-bg-info mb-3">  Danh sách giảng dạy </span>
+</div>
 
 
-<div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary"> Danh sách giảng dạy</h6>
-    </div>
-
+<div class="card  mb-4">
     <div class="card-body">
         <div class="table-responsive">
 
@@ -150,8 +163,21 @@ $content = '
 
 if (isset($data)) {
   foreach ($data as $item) {
+
+    $badge_class = '';
+    if ($item['ten_hocky'] == 1) {
+      $badge_class = 'badge-primary';
+    } elseif ($item['ten_hocky'] == 2) {
+      $badge_class = 'badge-warning';
+    } elseif ($item['ten_hocky'] == 3) {
+      $badge_class = 'badge-dark';
+    } else {
+      $badge_class = 'badge-info';
+    }
+
+
     $content .= '
-                    <tr onclick="showModal(' . $item['ma_lopmonhoc'] . ')">
+                    <tr onclick="showModal(' . $item['id'] . ')">
                         <td class="text-center font-weight-bold ">' . $item['ma_lopmonhoc'] . '</td>
                         <td class="text-center">' . $item['ten_phong'] . '</td>
                         <td class="text-center">' . $item['si_solop'] . '</td>
@@ -160,7 +186,7 @@ if (isset($data)) {
                         <td class="text-center">' . $item['ho_lot_gv'] . ' ' . $item['ten_gv'] . '</td>
                         <td class="text-center">' . $item['ngay_batdau'] . '</td>
                         <td class="text-center">' . $item['tiet_hoc'] . '</td>
-                        <td class="text-center">' . $item['ten_hocky'] . ' - ' . $item['nam_hoc'] . '</td>
+                        <td class="text-center"><span class="badge ' . $badge_class . '">' . 'HK' . $item['ten_hocky'] . ' ' . $item['nam_hoc'] . ' - ' . ($item['nam_hoc'] + 1) . '</span></td>
                     </tr>';
   }
 } else {
@@ -180,65 +206,63 @@ $content .= '
 
 
 <script src="/js/modal/modal-detail-giangday.js"></script>
-
 <script>
 $(document).ready(function() {
-    $(".editButton").click(function() {
-        // Hiển thị modal cập nhật
-        $("#EditModal").modal("show");
-    });
+  
+    
+  $("#updateForm").submit(function(e) {
+      e.preventDefault(); 
+      var id = $("#id").val();
+      var siSo = $("#si_solop").val();
 
-    $("#updateForm").submit(function(e) {
-        e.preventDefault(); 
-        var maLopMonHoc = $("#ma_lopmonhoc").val();
-        var siSo = $("#si_solop").val();
+      // Ẩn modal cập nhật
+      $("#EditModal").modal("hide");
 
-        // Ẩn modal cập nhật
-        $("#EditModal").modal("hide");
+      // Hiển thị modal xác nhận
+      $("#confirmModal").modal("show");
 
-        // Hiển thị modal xác nhận
-        $("#confirmModal").modal("show");
+      // Xử lý sự kiện khi nút xác nhận trong modal xác nhận được click
+      $("#confirmUpdateBtn").click(function() {
+          // Gửi AJAX request
+          $.ajax({
+              url: "../controller/GiangDayController.php?action=updateSiSo",
+              type: "POST",
+              data: { id: id, si_solop: siSo },
+              success: function(response) {
+                  // Ẩn modal xác nhận
+                  $("#confirmModal").modal("hide");
+                  $("#EditModal").modal("hide");
 
-        // Xử lý sự kiện khi nút xác nhận trong modal xác nhận được click
-        $("#confirmUpdateBtn").click(function() {
-            // Gửi AJAX request
-            $.ajax({
-                url: "../controller/GiangDayController.php?action=updateSiSo",
-                type: "POST",
-                data: { ma_lopmonhoc: maLopMonHoc, si_solop: siSo },
-                success: function(response) {
-                    // Ẩn modal xác nhận
-                    $("#confirmModal").modal("hide");
-                    $("#EditModal").modal("hide");
-
-                    // Hiển thị thông báo thành công
-                    toastr.success(\'Cập nhật dữ liệu thành công!\', { timeOut: 1000 });
+                  // Hiển thị thông báo thành công
+                  toastr.success(\'Cập nhật dữ liệu thành công!\', { timeOut: 1000 });
 
 
-                    // Load lại dữ liệu trên trang
-                    setTimeout(function() {
-                      // Làm mới trang để cập nhật dữ liệu mới
-                      location.reload();
-                    }, 300);
-                    
+                  // Load lại dữ liệu trên trang
+                  setTimeout(function() {
+                    // Làm mới trang để cập nhật dữ liệu mới
+                    location.reload();
+                  }, 300);
+                  
 
-                },
-                error: function(xhr, status, error) {
-                    // Xử lý lỗi nếu cần
-                    console.error(error);
-                }
-            });
-        });
-    });
-
-    $("#confirmModal").on("hidden.bs.modal", function() {
-      $("#EditModal").modal("show");
+              },
+              error: function(xhr, status, error) {
+                  // Xử lý lỗi nếu cần
+                  console.error(error);
+              }
+          });
+      });
   });
+
+  $("#confirmModal").on("hidden.bs.modal", function() {
+    $("#EditModal").modal("show");
 });
+});
+
+
+
 </script>
 
 ';
 
-
-// Include file layout-admin.php
-include '../view/admin/layout-admin.php';
+require_once __DIR__ . '/../Helper/ConfigHelper.php';
+include VIEW_PATH . 'admin/layout-admin.php';

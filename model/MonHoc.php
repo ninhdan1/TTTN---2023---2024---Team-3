@@ -1,12 +1,13 @@
 <?php
 
-require_once __DIR__ . '/../model/SQLQueries.php';
+require_once __DIR__ . '/../Helper/ConfigHelper.php';
+
+require_once MODEL_PATH . 'SQLQueries.php';
 
 class MonHoc
 {
     private $conn;
     private $SQLQueries;
-
     public function __construct($conn)
     {
         $this->conn = $conn;
@@ -15,37 +16,27 @@ class MonHoc
 
     public function getDSMH_Model()
     {
-        $query = "SELECT * FROM mon_hoc";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+        return $this->SQLQueries->selectAllData('mon_hoc');
     }
 
-    public function addMonHoc($maMonHoc, $tenMonHoc, $loaiMonHoc)
+    public function isCheckForDuplicatesMaMonHoc($maMonHoc)
     {
-        try {
-            $sql = "INSERT INTO mon_hoc (ma_monhoc, ten_monhoc, loai_monhoc) VALUES (?, ?, ?)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute([$maMonHoc, $tenMonHoc, $loaiMonHoc]);
-            return true;    
-        } catch (PDOException $e) {
-            echo "Lỗi cơ sở dữ liệu: " . $e->getMessage();
-            return false;
-        }
+        return $this->SQLQueries->selectData('mon_hoc', 'ma_monhoc', 'ma_monhoc = ?', [$maMonHoc]);
     }
 
-    public function editMonHoc($maMonHoc, $tenMonHoc, $loaiMonHoc)
+
+    public function insertMonHoc($data)
     {
-        try {
-            $sql = "UPDATE mon_hoc SET ten_monhoc = ?, loai_monhoc = ? WHERE ma_monhoc = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute([$tenMonHoc, $loaiMonHoc, $maMonHoc]);
-            return true;
-        } catch (PDOException $e) {
-            echo "Lỗi cơ sở dữ liệu: " . $e->getMessage();
-            return false;
-        }
+        return $this->SQLQueries->insertData('mon_hoc', $data);
+    }
+
+    public function getDetailByID($maMonHoc)
+    {
+        return $this->SQLQueries->selectData('mon_hoc', '*', 'ma_monhoc = ?', [$maMonHoc]);
+    }
+
+    public function updateMonHocByID($maMonHoc, $data)
+    {
+        return $this->SQLQueries->updateData('mon_hoc', $data, 'ma_monhoc = ?', [$maMonHoc]);
     }
 }
-?>

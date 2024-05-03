@@ -25,6 +25,7 @@ $content = '
             <p>';
 
 
+
 $content .= isset($_SESSION["thongbao"]) ? $_SESSION["thongbao"] : '';
 
 $content .= '</p>
