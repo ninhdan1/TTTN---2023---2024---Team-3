@@ -36,7 +36,9 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <!-- Custom fonts for this template-->
     <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
@@ -62,7 +64,8 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
                 <!-- Topbar -->
                 <?php include "../components/header.php"; ?>
                 <!-- End of Topbar -->
-                <a href="qly_taikhoan.php" class="btn btn-primary" style="position: relative; top: -10px; float: left; margin-left: 10px;">Trở lại</a>
+                <a href="qly_taikhoan.php" class="btn btn-primary"
+                    style="position: relative; top: -10px; float: left; margin-left: 10px;">Trở lại</a>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -75,6 +78,7 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
                         <form action="../../controller/UserController.php?action=update" method="post">
                             <label for="username">Nhập tài khoản</label>
                             <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                            <input type="text" name="username" id="username" value="<?= $user['username'] ?>">
                             <p class="error-p">
                                 <?php
                                 if (isset($_SESSION["error_username"])) {
@@ -82,10 +86,9 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
                                     unset($_SESSION["error_username"]);
                                 }
                                 ?>
-                            </p>
-                            <input type="text" name="username" id="username" value="<?= $user['username'] ?>"><br>
+                            </p><br>
                             <label for="password">Nhập mật khẩu</label>
-                            <input type="password" name="password" id="password" value="<?= $user['password'] ?>"><br>
+                            <input type="password" name="password" id="password" value="<?= $user['password'] ?>">
                             <p class="error-p">
                                 <?php
                                 if (isset($_SESSION["error_password"])) {
@@ -93,16 +96,19 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
                                     unset($_SESSION["error_password"]);
                                 }
                                 ?>
-                            </p>
+                            </p><br>
                             <label for="role">Chọn quyền</label>
                             <select name="role" id="role">
-                                <option value="admin" <?php if ($user['role'] == 'admin') echo "selected" ?>>Admin</option>
+                                <option value="admin" <?php if ($user['role'] == 'admin') echo "selected" ?>>Admin
+                                </option>
                                 <option value="user" <?php if ($user['role'] == 'user') echo "selected" ?>>User</option>
                             </select><br>
                             <label for="">Trạng thái hoạt động</label>
                             <select name="status" id="status">
-                                <option value="1" <?php if ($user['is_active'] == 1) echo "selected" ?>>Hoạt động</option>
-                                <option value="0" <?php if ($user['is_active'] == 0) echo "selected" ?>>Không hoạt động</option>
+                                <option value="1" <?php if ($user['is_active'] == 1) echo "selected" ?>>Hoạt động
+                                </option>
+                                <option value="0" <?php if ($user['is_active'] == 0) echo "selected" ?>>Không hoạt động
+                                </option>
                             </select><br>
                             <input type="hidden" name="giangvien" value="<?= $user['ma_gv'] ?>">
                             <label for="giangvien">Giảng viên</label>
@@ -114,14 +120,20 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
                                 foreach ($teachers as $teacher) {
                                     $selected = ($teacher['ma_gv'] == $user['ma_gv']) ? "selected" : "";
                                 ?>
-                                    <option value="<?= $teacher['ma_gv'] ?>" <?= $selected ?>>
-                                        <?= $teacher['ten_gv'] ?>
-                                    </option>
+                                <option value="<?= $teacher['ma_gv'] ?>" <?= $selected ?>>
+                                    <?= $teacher['ten_gv'] ?>
+                                </option>
                                 <?php
+                                
                                 }
                                 ?>
+                                <option value="" <?= $user['ma_gv'] == null ? 'selected' : '' ?>>Giảng viên chưa xác
+                                    định
+                                </option>
+
                             </select><br>
-                            <button type="submit" name="submit" class="btn btn-primary" id="loginButton">Cập nhật</button>
+                            <button type="submit" name="submit" class="btn btn-primary" id="loginButton">Cập
+                                nhật</button>
                         </form>
                         <script src="../../js/login.js"></script>
                     </div>
@@ -146,7 +158,8 @@ $user = $user->selectUserID($table, $columns, $condition, [$id]);
         </a>
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

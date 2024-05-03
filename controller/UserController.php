@@ -59,29 +59,32 @@ class UserController
     $password = $_POST['password'];
     $password = md5($password);
     $user = $this->model->selectUserID('tai_khoan', '*', 'username = ? AND password = ?', [$username, $password]);
-    $_SESSION['user'] = $user;
-    if ($user['is_active'] == 0) {
-      $_SESSION["thongbao"] = "Tài khoản đã bị khóa";
-      header("Location: ../view/login.php");
-      exit();
-    }
-    if ($user && $user['role'] == 'admin') {
-      $_SESSION['id'] = $user['id'];
-      $_SESSION['username'] = $user['username'];
-      $_SESSION['role'] = $user['role'];
-      $_SESSION['login'] = true;
-      header("Location: ../view/admin/layout-admin.php");
-      exit();
-    } elseif ($user && $user['role'] == 'user') {
-      $_SESSION['id'] = $user['id'];
-      $_SESSION['username'] = $user['username'];
-      $_SESSION['role'] = $user['role'];
-      $_SESSION['login'] = true;
-      header("Location: ../view/user/layout-user.php");
-      exit();
+    if ($user) {
+      if ($user['is_active'] == 0) {
+        $_SESSION["thongbao"] = "Tài khoản đã bị khóa";
+        header("Location: ../view/login.php");
+        exit();
+      }
+
+      if ($user['role'] == 'admin') {
+        $_SESSION['id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['login'] = true;
+        header("Location: ../view/admin/layout-admin.php");
+        exit();
+      } elseif ($user['role'] == 'user') {
+        $_SESSION['id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['login'] = true;
+        header("Location: ../view/user/layout-user.php");
+        exit();
+      }
     } else {
       $_SESSION['thongbao'] = 'Tài khoản hoặc mật khẩu không đúng';
       header("Location: ../view/login.php");
+      exit();
     }
   }
   public function changePassword()
@@ -151,7 +154,13 @@ class UserController
     $this->kiemTraTaiKhoanTrung("../view/admin/them_taikhoan.php");
     $role = $_POST['role'];
     $status = $_POST['status'];
-    $ma_gv = $_POST['giangvien'];
+    $ma_gv = ($_POST['giangvien'] !== "") ? $_POST['giangvien'] : null;
+    if ($ma_gv === null) {
+      $_SESSION["thongbao"] = "Vui lòng chọn giảng viên để thêm";
+      header("Location: /view/admin/them_taikhoan.php");
+      exit();
+    }
+
     $data = [
       'username' => $username,
       'password' => md5($password),
@@ -297,12 +306,12 @@ class UserController
   }
   public function kiemTraTaiKhoanTrung($redirectUrl)
   {
-    $id = isset($_POST['id'])?$_POST['id']:'';
+    $id = isset($_POST['id']) ? $_POST['id'] : '';
     $username = $_POST['username'];
     $username = $this->xoaKhoangTrang($username);
     $checkUser = $this->model->selectUserID('tai_khoan', '*', 'username = ? AND id != ?', [$username, $id]);
     if ($checkUser) {
-      $_SESSION["error_username"] = "Tài khoản đã tồn tại";
+      $_SESSION["error_username"] = " Tài khoản đã được đăng ký";
       header("Location: " . $redirectUrl);
       exit();
     }
@@ -313,6 +322,7 @@ class UserController
     $str = preg_replace('/\s+/', '', trim($str));
     return $str;
   }
+
 }
 $userController = new UserController();
 $action = isset($_GET['action']) ? $_GET['action'] : '';
