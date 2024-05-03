@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+
+?>
+
 
 <head>
   <meta charset="UTF-8">
@@ -26,8 +30,7 @@
       <label for="password">Mật khẩu</label><br>
       <input type="password" id="password" name="password" placeholder="Vui lòng nhập mật khẩu ..."><br>
       <div class="forget-password">
-        <a href="#" onclick="alert('Vui lòng liên hệ với phòng ban khoa công nghệ thông tin')">Quên mật khẩu
-          ?</a>
+        <a href="#" onclick="alert('Vui lòng liên hệ với phòng ban khoa công nghệ thông tin')">Quên mật khẩu ?</a>
       </div>
       <p>
         <?php

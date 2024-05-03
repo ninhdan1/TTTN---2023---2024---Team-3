@@ -6,28 +6,21 @@ $content = '
     <h1 class="h3 mb-0 text-gray-800">Giảng dạy</h1>
 </div>
 
-<div class="col">
-<span class="badge rounded-pill text-bg-danger mb-3"> <a href="/view/admin/layout-admin.php"" class="text-decoration-none text-light"> Trang chủ </a></span>
-<span class="badge rounded-pill text-bg-light mb-3"> <strong> <i class="bi bi-caret-right-fill"></i> </strong> </span>
-<span class="badge rounded-pill text-bg-info mb-3">  Import file </span>
-</div>
-
-
-
-<div class="card mb-4">
-   
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary"> Import file excel</h6>
+    </div>
     <div class="card-body">
         <form action="../controller/ImportFileExcelController.php?action=import" method="post"
             enctype="multipart/form-data" class="was-validated">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="tenHocKy" class="font-weight-bold d-inline-block">Chọn học kỳ:</label>
+                        <label for="tenHocKy" class="font-weight-bold d-inline-block">Học kỳ:</label>
                         <select class="form-select form-select-sm" aria-label="Small select example" name="tenHocKy"
                             id="tenHocKy">
-                            <option value="1">Học kỳ I</option>
-                            <option value="2">Học kỳ II</option>
-                            <option value="3">Học kỳ III</option>
+                            <option value="1,3,5,7">1, 3, 5, 7</option>
+                            <option value="2,4,6,8">2, 4, 6, 8</option>
                         </select>
                     </div>
                 </div>
@@ -37,7 +30,7 @@ $content = '
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group input-group-sm has-validation">
-                                <label for="namHoc" class="font-weight-bold d-inline-block">Chọn năm học:</label>
+                                <label for="namHoc" class="font-weight-bold d-inline-block">Năm học:</label>
                                 <input type="number" placeholder="" class="form-control" name="namHoc" id="namHoc"
                                     required min="1900" max="3000" minlength="4" maxlength="4"
                                     value="' . $currentYear . '" onchange="updateNextYear()" onblur="validateYearInput()">
@@ -58,6 +51,7 @@ $content = '
                             </div>
                         </div>
                     </div>
+
 
                 </div>
 
@@ -96,37 +90,13 @@ $content = '
     </div>
 </div>
 
-';
 
-
-$content .= '
 <script>
-
-
-setDefaultHocKy();
-
-function setDefaultHocKy() {
-    var today = new Date();
-    var currentMonth = today.getMonth() + 1; // Tháng hiện tại (1-12)
-
-    var defaultHocKy = 1; // Giá trị mặc định là Học kỳ I
-
-    // Kiểm tra tháng hiện tại để đặt giá trị mặc định cho học kỳ
-    if (currentMonth >= 1 && currentMonth <= 5) {
-        defaultHocKy = 2; // Nếu tháng hiện tại từ tháng 1 đến tháng 5, đặt là Học kỳ II
-    } else if (currentMonth >= 6 && currentMonth <= 7) {
-        defaultHocKy = 3; // Nếu tháng hiện tại từ tháng 6 đến tháng 7, đặt là Học kỳ III
-    }
-
-    // Đặt giá trị mặc định cho select box
-    $("#tenHocKy").val(defaultHocKy);
-}
-
-
 function updateNextYear() {
     var currentYear = parseInt(document.getElementById("namHoc").value);
     document.getElementById("namHoc2").value = currentYear + 1;
 }
+
 
 function validateYearInput() {
     var inputYear = document.getElementById("namHoc").value;
@@ -150,7 +120,4 @@ function validateYearInput() {
 ';
 
 
-
-
-require_once __DIR__ . '/../Helper/ConfigHelper.php';
-include VIEW_PATH . 'admin/layout-admin.php';
+include '../view/admin/layout-admin.php';
