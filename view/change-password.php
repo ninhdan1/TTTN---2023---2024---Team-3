@@ -1,4 +1,6 @@
 <?php
+require_once '../DB/DBConnect.php';
+require_once '../model/User.php';
 //350
 session_start();
 if (!isset($_SESSION['login'])) {
@@ -46,13 +48,7 @@ if (!isset($_SESSION['login'])) {
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
                 <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php if ($_SESSION['role'] == 'admin') {
-                                                                                                    echo "./admin/layout-admin.php";
-                                                                                                } else {
-                                                                                                    echo "./user/layout-user.php";
-                                                                                                }
-
-                                                                                                ?>">
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin/layout-admin.php">
                     <div class="sidebar-brand-icon rotate-n-15">
                         <i class="fas fa-laugh-wink"></i>
                     </div>
@@ -72,36 +68,52 @@ if (!isset($_SESSION['login'])) {
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
+                <li class="nav-item ">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Components</span>
+                        <i class="bi bi-people"></i>
+                        <span>Tài khoản</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Custom Components:</h6>
-                            <a class="collapse-item" href="buttons.php">Buttons</a>
-                            <a class="collapse-item" href="cards.php">Cards</a>
+                            <h6 class="collapse-header">Account Management</h6>
+                            <a class="collapse-item " href="admin/qly_taikhoan.php">Tài khoản</a>
                         </div>
                     </div>
                 </li>
 
+
+
                 <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
+                <li class="nav-item ">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImportExcel" aria-expanded="true" aria-controls="collapseImportExcel">
+                        <i class="bi bi-upload"></i>
+                        <span>Giảng dạy</span>
+                    </a>
+                    <div id="collapseImportExcel" class="collapse" aria-labelledby="headingImportExcel" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Quản lý giảng dạy:</h6>
+                            <a class="collapse-item" href="import-excel.php">Import file excel</a>
+                            <a class="collapse-item" href="#">Danh sách giảng dạy</a>
+                        </div>
+                    </div>
+
+                </li>
+
+
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <!-- <li class="nav-item ">
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-wrench"></i>
-                        <span>Utilities</span>
+                        <i class="bi bi-person-circle"></i>
+                        <span>Giảng Viên</span>
                     </a>
                     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Custom Utilities:</h6>
-                            <a class="collapse-item" href="utilities-color.php">Colors</a>
-                            <a class="collapse-item" href="utilities-border.php">Borders</a>
-                            <a class="collapse-item" href="utilities-animation.php">Animations</a>
-                            <a class="collapse-item" href="utilities-other.php">Other</a>
+                            <a class="collapse-item" href="qly_gv.php">Giảng Viên</a>
+                            <a class="collapse-item" href="ds_gv.php">Danh sách GV</a>
                         </div>
                     </div>
-                </li>
+                </li> -->
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
@@ -148,6 +160,7 @@ if (!isset($_SESSION['login'])) {
 
 
             </ul>
+
             <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
@@ -351,11 +364,11 @@ if (!isset($_SESSION['login'])) {
                         </div>
                         <div id="password-form">
                             <form action="../../controller/UserController.php?action=changePassword" method="post">
-                                <input type="hidden" name="username" value="<?= $_SESSION['username'] ?>">
+                                <input type="hidden" name="id" value="<?= $_SESSION['id'] ?> ">
                                 <label for="old_password">Nhập mật khẩu cũ:<span>*</span></label><br>
-                                <input type="password" name="oldPassword" id="old_password"><br>
+                                <input type="password" name="oldPassword" id="oldPassword"><br>
                                 <label for="">Nhập mật khẩu mới:<span>*</span></label><br>
-                                <input type="password" name="newPassword" id="new_password"><br>
+                                <input type="password" name="newPassword" id="newPassword"><br>
                                 <label for="">Nhập lại mật khẩu mới:<span>*</span></label><br>
                                 <input type="password" name="re_new_password" id="re_new_password"><br>
                                 <p>
@@ -369,56 +382,54 @@ if (!isset($_SESSION['login'])) {
                                 <input type="submit" value="Đổi mật khẩu">
                             </form>
                         </div>
+                        <!-- End of Main Content -->
 
                     </div>
-                    <!-- End of Main Content -->
+                    <!-- End of Content Wrapper -->
 
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- End of Page Wrapper -->
 
-            </div>
-            <!-- End of Page Wrapper -->
+                <!-- Scroll to Top Button-->
+                <a class="scroll-to-top rounded" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
 
-            <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="../../logout.php">Logout</a>
+                <!-- Logout Modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-primary" href="../../logout.php">Logout</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="vendor/jquery/jquery.min.js"></script>
-            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <!-- Bootstrap core JavaScript-->
+                <script src="vendor/jquery/jquery.min.js"></script>
+                <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="js/sb-admin-2.min.js"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="vendor/chart.js/Chart.min.js"></script>
+                <!-- Page level plugins -->
+                <script src="vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="js/demo/chart-area-demo.js"></script>
-            <script src="js/demo/chart-pie-demo.js"></script>
+                <!-- Page level custom scripts -->
+                <script src="js/demo/chart-area-demo.js"></script>
+                <script src="js/demo/chart-pie-demo.js"></script>
 
     </body>
 
