@@ -28,18 +28,15 @@ class MonHocController
         require_once '../view/mon_hoc_list.php';
     }
 
-
-    public function getListMonHoc()
-    {
-        $result = $this->model->getDSMH_Model();
-        return $this->responseHelper->Response(true, "Lấy dữ liệu thành công!", $result);
-    }
-
     public function getDetailByID($maMonHoc)
     {
         $detailData  = $this->model->getDetailByID($maMonHoc);
-
-        return $this->responseHelper->Response(true, "Lấy dữ liệu thành công!", $detailData);
+        if (is_array($detailData)) {
+            header('Content-Type: application/json');
+            echo json_encode($detailData);
+        } else {
+            echo "Không thể lấy dữ liệu chi tiết!";
+        }
     }
 
     public function update()
@@ -78,7 +75,7 @@ class MonHocController
         $result = $this->model->updateMonHocByID($maMonHoc, $data);
 
         if ($result) {
-            return $this->responseHelper->Response(true, "Cập nhật dữ liệu thành công!", $data);
+            return $this->responseHelper->Response(true, "Cập nhật thành công!", $data);
         }
     }
 
@@ -147,9 +144,6 @@ if (isset($_GET['action'])) {
     switch ($action) {
         case 'index':
             $mh->index();
-            break;
-        case 'getListMonHoc':
-            $mh->getListMonHoc();
             break;
         case 'detail':
             $maMonHoc = $_GET['ma_monhoc'];
