@@ -1,5 +1,11 @@
 <?php
-session_start();
+
+// Start the session if it's not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
 if (!isset($_SESSION['login'])) {
     header("Location: /view/login.php");
     exit();
@@ -28,31 +34,26 @@ if (!isset($_SESSION['login'])) {
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <!-- Custom fonts for this template-->
         <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
 
         <!-- Custom styles for this template-->
         <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
         <!-- Css Toastr -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <!-- Css DataTables -->
-        <link rel="stylesheet" type="text/css"
-            href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
         <link ref="stylesheet" href="https://cdn.datatables.net/select/2.0.1/css/select.dataTables.css">
         <link ref="stylesheet" href="https://cdn.datatables.net/responsive/3.0.1/css/responsive.dataTables.css">
         <link ref="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css">
         <link ref="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <link rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
     </head>
 
@@ -131,8 +132,7 @@ if (!isset($_SESSION['login'])) {
 
 
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
         </script>
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js">
 
@@ -161,7 +161,7 @@ if (!isset($_SESSION['login'])) {
         <script src="/js/datatables/datatables-monhoc.js"></script>
         <script src="/js/datatables/datatables-thongke.js"></script>
         <script src="/js/datatables/datatables-giangvien.js"></script>
-        <script src="/js/datatables/datatable-taikhoan.js"></script>
+        <script src="/js/datatables/datatables-taikhoan.js"></script>
 
 
     </body>

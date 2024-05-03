@@ -72,10 +72,7 @@ $content = '
             <input type="text" class="form-control" id="so_tietmonhoc" readonly>
         </div>
 
-          <div class="mb-3">
-            <label for="ten_phong" class="col-form-label">Tên phòng:</label>
-            <input type="text" class="form-control" id="ten_phong" readonly>
-          </div>
+         
          
           </div>
 
@@ -87,6 +84,10 @@ $content = '
           Sĩ số lớp không được để trống và phải là số nguyên dương!
       </div>
         </div>
+        <div class="mb-3">
+        <label for="ten_phong" class="col-form-label">Tên phòng:</label>
+        <input type="text" class="form-control" id="ten_phong" readonly>
+      </div>
           <div class="mb-3">
             <label for="ma_lophoc" class="col-form-label">Mã lớp học:</label>
             <input type="text" class="form-control" id="ma_lophoc" readonly>

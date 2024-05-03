@@ -96,12 +96,12 @@ class ImportFileExcelController
     {
         $result = $this->sqlQueries->selectData('hoc_ky', 'ma_hocky', 'ten_hocky = ? AND nam_hoc = ?', [$hoc_ky_data['ten_hocky'], $hoc_ky_data['nam_hoc']]);
 
-        // Nếu học kỳ đã tồn tại, trả về mã học kỳ
+
         if (!empty($result)) {
             return $result[0]['ma_hocky'];
         }
 
-        // Nếu không, thực hiện chèn mới và trả về mã học kỳ mới
+
         return $this->sqlQueries->insertData('hoc_ky', $hoc_ky_data);
     }
 
@@ -143,7 +143,7 @@ class ImportFileExcelController
                 return false;
             }
 
-            // Kiểm tra xem mã lớp môn học đã tồn tại hay không
+
             $result = $this->sqlQueries->selectData('lop_monhoc', '*', 'ma_lopmonhoc = ? AND ma_hk = ?', [$row[$ma_lopmonhoc_index], $ma_hk]);
 
             if ($result) {
@@ -201,7 +201,7 @@ class ImportFileExcelController
 
     private function insertMonHocIfNotExists($row)
     {
-        // Define indexes for readability and easy maintenance
+
         $ma_monhoc_index = 4;
         $ten_monhoc_index = 90;
 
@@ -225,7 +225,7 @@ class ImportFileExcelController
                 $this->sqlQueries->insertData('mon_hoc', $data);
                 return true;
             } else {
-                // Môn học đã tồn tại, không cần thêm mới
+
                 return true;
             }
         } else {
@@ -238,7 +238,7 @@ class ImportFileExcelController
 
     private function insertGiangVienIfNotExists($row)
     {
-        // Define indexes for readability and easy maintenance
+
         $ma_gv_index = 5;
         $ho_lot_gv_index = 91;
         $ten_gv_index = 92;
@@ -264,7 +264,7 @@ class ImportFileExcelController
                 $this->sqlQueries->insertData('giang_vien', $data);
                 return true;
             } else {
-                // Giảng viên đã tồn tại, không cần thêm mới
+
                 return true;
             }
         } else {
@@ -276,7 +276,7 @@ class ImportFileExcelController
 
     private function insertLopIfNotExists($row)
     {
-        // Define indexes for readability and easy maintenance
+
         $ma_lop_index = 82;
         $si_so_index = 18;
 
@@ -300,7 +300,7 @@ class ImportFileExcelController
                 $this->sqlQueries->insertData('lop', $data);
                 return true;
             } else {
-                // Lớp đã tồn tại, không cần thêm mới
+
                 return true;
             }
         } else {

@@ -82,9 +82,9 @@ function xacNhanKhoiLuong(mahocky, xacnhan) {
     success: function (response) {
       var data = JSON.parse(response);
       if (data.success) {
-        toastr.success("Cập nhật dữ liệu thành công");
+        toastr.success("Xác nhận khối lượng giảng dạy thành công");
       } else {
-        toastr.error("Cập nhật dữ liệu thất bại");
+        toastr.error("Xác nhận khối lượng giảng dạy thất bại");
       }
     },
   });
@@ -139,6 +139,7 @@ function khoiLuongTongCaNhan($maHocKy) {
           $("#isActive")
             .text("Chưa xác nhận")
             .addClass("badge badge-Secondary");
+          $("#btnXacNhanUpdate").removeAttr("disabled");
         } else {
           $("#isActive").text("Đã xác nhận").addClass("badge badge-success");
           $("#btnXacNhanUpdate").prop("disabled", true);

@@ -260,10 +260,11 @@
          countHocKy();
          countTaiKhoan();
          countXacNhan();
+         countYeuCauChinhSua();
          listThongKeMoiNhat();
          listGiangVien();
          listMonHoc();
-         countYeuCauChinhSua();
+
 
      });
 
@@ -496,7 +497,7 @@
                              $(this).css('margin-top', 0);
                          }
                      });
-                 }, 2000);
+                 }, 0);
              },
              error: function(xhr, status, error) {
                  console.error(error);

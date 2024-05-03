@@ -1,17 +1,13 @@
 <style>
-.navbar-logo {
-    margin-left: 20px;
-    /* Đẩy logo sang bên trái */
-}
+    .navbar-logo {
+        margin-left: 20px;
+    }
 
-.logo-image {
-    width: 220px;
-    /* Độ rộng của logo */
-    height: auto;
-    /* Chiều cao tự động theo tỷ lệ */
-    display: block;
-    /* Hiển thị hình ảnh như một khối */
-}
+    .logo-image {
+        width: 220px;
+        height: auto;
+        display: block;
+    }
 </style>
 
 
@@ -31,17 +27,14 @@
 
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
-            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
             </a>
             <!-- Dropdown - Messages -->
-            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                aria-labelledby="searchDropdown">
+            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                     <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                            aria-label="Search" aria-describedby="basic-addon2">
+                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button">
                                 <i class="fas fa-search fa-sm"></i>
@@ -59,7 +52,7 @@
             " id="messagesDropdown">
                 <i class="fas fa-envelope fa-fw"></i>
                 <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter" id="countYeuCauChinhSua"></span>
+                <span class="badge badge-danger badge-counter" id="countYeuCauChinhSua1"></span>
             </a>
             <!-- Dropdown - Messages -->
 
@@ -69,8 +62,7 @@
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"> <i class="bi bi-person-fill"></i>
                     <?= $_SESSION['username'] ?></span>
@@ -95,23 +87,23 @@
 
 
 <script>
-$(document).ready(function() {
-    countYeuCauChinhSua();
-});
-
-
-function countYeuCauChinhSua() {
-    $.ajax({
-        url: "/../controller/DashboardController.php?action=countYeuCauChinhSua",
-        type: "GET",
-        success: function(response) {
-            var result = JSON.parse(response);
-
-            $("#countYeuCauChinhSua").html(result.data.count);
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        },
+    $(document).ready(function() {
+        countYeuCauChinhSua1();
     });
-}
+
+
+    function countYeuCauChinhSua1() {
+        $.ajax({
+            url: "/../controller/DashboardController.php?action=countYeuCauChinhSua",
+            type: "GET",
+            success: function(response) {
+                var result = JSON.parse(response);
+
+                $("#countYeuCauChinhSua1").html(result.data.count);
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            },
+        });
+    }
 </script>

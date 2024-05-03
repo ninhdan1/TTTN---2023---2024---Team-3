@@ -79,10 +79,6 @@ class DashboardController
         $data = $this->model->countYeuCauChinhSua();
         return $this->responseHelper->Response(true, "Lấy dữ liệu thành công!", $data);
     }
-    //----------------------------------------USER----------------------------------------//
-
-
-
 }
 
 if (isset($_GET['action'])) {

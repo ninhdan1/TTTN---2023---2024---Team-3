@@ -78,7 +78,7 @@ class MonHocController
         $result = $this->model->updateMonHocByID($maMonHoc, $data);
 
         if ($result) {
-            return $this->responseHelper->Response(true, "Cập nhật thành công!", $data);
+            return $this->responseHelper->Response(true, "Cập nhật dữ liệu thành công!", $data);
         }
     }
 

@@ -131,6 +131,7 @@ class UserController
     if (isset($message)) {
       $_SESSION["thongbao"] = $message;
       header("Location: ../view/change-password.php");
+
       exit();
     } else {
       $table = 'tai_khoan';
@@ -149,6 +150,56 @@ class UserController
       }
     }
   }
+
+  public function changePasswordUser()
+  {
+    $id = $_POST['id'];
+    $newPassword = $_POST['newPassword'];
+    $oldPassword = $_POST['oldPassword'];
+    $re_new_password = $_POST['re_new_password'];
+
+    if ($newPassword == "" || $oldPassword == "" || $re_new_password == "") {
+      $message = "Vui lòng nhập đầy đủ thông tin";
+    } elseif (strlen($oldPassword) < 10 || strlen($oldPassword) > 30) {
+      $message = "Mật khẩu cũ không đúng";
+    } elseif (strlen($newPassword) < 10 || strlen($newPassword) > 30) {
+      $message = "Mật khẩu mới không đúng";
+    } elseif (strlen($re_new_password) < 10 || strlen($re_new_password) > 30) {
+      $message = "Mật khẩu nhập lại không đúng";
+    } elseif (!preg_match('/[A-Z]/', $newPassword) || !preg_match('/[^\w]/', $newPassword)) {
+      $message = "Mật khẩu mới phải có ít nhất một chữ hoa và một ký tự đặc biệt";
+    } elseif ($newPassword == $oldPassword) {
+      $message = "Mật khẩu mới không được trùng với mật khẩu cũ";
+    } elseif ($newPassword != $re_new_password) {
+      $message = "Mật khẩu nhập lại không đúng";
+    }
+    if (isset($message)) {
+      $_SESSION["thongbao"] = $message;
+      header("Location: ../view/change-password-user.php");
+
+      exit();
+    } else {
+      $table = 'tai_khoan';
+      $data = [
+        'password' => md5($newPassword),
+      ];
+      $condition = 'id = ?';
+      $result = $this->model->update($table, $data, $condition, $id);
+      if ($result) {
+        header("Location: ../../index.php");
+        exit();
+      } else {
+        $_SESSION["thongbao"] = "Mật khẩu cũ không đúng";
+        header("Location: ../view/change-password-user.php");
+        exit();
+      }
+    }
+  }
+
+
+
+
+
   public function delete()
   {
     $id = $_GET['id'];
@@ -443,6 +494,9 @@ switch ($action) {
     break;
   case 'changePassword':
     $userController->changePassword();
+    break;
+  case 'changePasswordUser':
+    $userController->changePasswordUser();
     break;
   case 'delete':
     $userController->delete();

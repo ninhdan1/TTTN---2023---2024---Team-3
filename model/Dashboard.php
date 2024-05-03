@@ -99,12 +99,5 @@ class Dashboard
         return $result;
     }
 
-    public function countThongBaoCaNhan($ma_gv)
-    {
-        $query = "SELECT COUNT(*) as count FROM thongbao_giangvien WHERE ma_gv = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute([$ma_gv]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
+  
 }

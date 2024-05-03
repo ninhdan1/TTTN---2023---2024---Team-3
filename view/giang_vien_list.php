@@ -24,7 +24,7 @@ $content = '
                         <div class="col-md-5"> 
                             <div class="mb-3">
                                 <label for="ma_hocky2" class="col-form-label">Chọn học kỳ thứ 2:</label>
-                                <select class="form-select" id="ma_hocky2"></select>
+                                <select class="form-select" id="ma_hocky2""></select>
                             </div>
                         </div>
 
