@@ -16,26 +16,31 @@ class UserController
   {
     $username = isset($_POST["username"]) ? $_POST["username"] : "";
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
-    if ($username == "" || $password == "") {
-      $_SESSION["thongbao"] = "Vui lòng nhập đầy đủ thông tin đăng nhập";
+    if ($username == "") {
+      $_SESSION["thongbao"] = "Tài khoản và mật khẩu không đúng";
       header("Location: ../index.php");
       exit();
     }
-    if (strlen($username) < 10  || strlen($password) > 30) {
-      $_SESSION["thongbao"] = "Tên đăng nhập và mật khẩu không đúng";
+    if ($password == "") {
+      $_SESSION["thongbao"] = "Tài khoản và mật khẩu không đúng";
       header("Location: ../index.php");
       exit();
     }
-    if (strlen($password) > 10  || strlen($password) < 15) {
+    if (strlen($username) <= 10  || strlen($username) >= 15) {
+      $_SESSION["thongbao"] = "Tài khoản và mật khẩu không đúng";
+      header("Location: ../index.php");
+      exit();
+    }
+    if (strlen($password) >= 10  && strlen($password) <= 15) {
       if (preg_match('/[A-Z]/', $password) && preg_match('/[^\w]/', $password)) {
         return true;
       } else {
-        $_SESSION["thongbao"] = "Tên đăng nhập và mật khẩu không đúng";
+        $_SESSION["thongbao"] = "Tài khoản và mật khẩu không đúng";
         header("Location: ../index.php");
         exit();
       }
     } else {
-      $_SESSION["thongbao"] = "Tên đăng nhập và mật khẩu không đúng";
+      $_SESSION["thongbao"] = "Tài khoản và mật khẩu không đúng";
       header("Location: ../index.php");
       exit();
     }
