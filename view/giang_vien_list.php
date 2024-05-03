@@ -119,7 +119,6 @@ $content = '
 </div>
 
 
-
 <!-- Modal So Sánh Theo Giảng Viên -->
 <div class="modal fade" id="SoSanhGiangVienModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document"> <!-- Thêm class modal-lg để tăng kích thước modal -->
@@ -132,20 +131,22 @@ $content = '
            
                 <form id="soSanhGiangVienForm" class="was-validated">
                     <div class="row">
-                        <div class="col-md-5">
-                            <div class="mb-3">
-                                <label for="ma_hockygiangvien" class="col-form-label">Chọn học kỳ:</label>
-                                <select class="form-select" id="ma_hockygiangvien" disabled>
-                                    <option value="" selected>Chọn học kỳ</option>
-                                </select>
-                            </div>
-                        </div>
+                       
                         <div class="col-md-5"> 
                             <div class="mb-3">
                                 <label for="ma_giangvien" class="col-form-label">Chọn giảng viên:</label>
                                 <select class="form-select" id="ma_giangvien"></select>
                             </div>
                         </div>
+
+                        <div class="col-md-5">
+                        <div class="mb-3">
+                            <label for="ma_hockygiangvien" class="col-form-label">Chọn học kỳ:</label>
+                            <select class="form-select" id="ma_hockygiangvien" disabled>
+                                <option value="" selected>Chọn học kỳ</option>
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="col-md-2 mt-4"> 
                     <div class="mb-3  align-items-center" style=" margin-top: 14px; ">

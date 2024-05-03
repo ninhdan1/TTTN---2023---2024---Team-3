@@ -268,10 +268,10 @@ $(document).ready(function () {
 
               html += "</tr>";
 
-              // // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
-              // if (!(item.ten_monhoc in displayedSubjects)) {
-              //   index++;
-              // }
+              // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
+              if (!(item.ten_monhoc in displayedSubjects)) {
+                index++;
+              }
             });
 
             // Destroy the existing DataTable
@@ -339,8 +339,6 @@ $(document).ready(function () {
               className: "btn btn-info",
               text: '<i class="fas fa-print"></i> Print', // Thêm class của Bootstrap vào đây
             },
-
-            // Tương tự với các nút khác
           ],
         },
       },

@@ -130,7 +130,7 @@ $content .= '
             <th rowspan="3"  class="text-center align-middle" style="font-size: 12px;">CÁC MÔN ĐỒ ÁN + BÀI TẬP LỚN</th>
             <th colspan="5" rowspan="2"  class="text-center align-middle"  style="font-size: 12px;">SỐ SINH VIÊN HỌC THÍ NGHIỆM - THỰC HÀNH</th>
             <th rowspan="3"  class="text-center align-middle "  style="font-size: 12px;">SỐ CA THỰC HÀNH </th>
-            <th colspan="7"  class="text-center align-middle"  style="font-size: 12px;">GIÁO VIÊN HƯỚNG DẪN</th>
+            <th colspan="5"  class="text-center align-middle"  style="font-size: 12px;">GIÁO VIÊN HƯỚNG DẪN</th>
         </tr>
         <tr>
             <th colspan="2"  class="text-center align-middle"  style="font-size: 12px;">GIÁO VIÊN THỨ NHẤT (TG/CH)</th>

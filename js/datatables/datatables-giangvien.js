@@ -129,13 +129,10 @@ $(document).ready(function () {
       clearColumns(2);
       clearResultColumns();
       $("#tongKetResult").text("");
+    } else {
+      toastr.error("Vui lòng chọn một giảng viên.");
     }
   });
-
-  // $("#SoSanhHocKyModal").on("show.bs.modal", function (e) {
-  //   // Xóa dữ liệu trong các trường hợp hoặc khởi tạo dữ liệu mới ở đây
-  //   clearAllData(); // Đảm bảo clear hết dữ liệu trước khi hiển thị modal
-  // });
 
   $("#ma_hocky1, #ma_hocky2").change(function () {
     var selectedHocKy1 = $("#ma_hocky1").val();
@@ -340,7 +337,9 @@ $(document).ready(function () {
 
   function loadGiangVienSelectBoxes() {
     $.ajax({
-      url: "../controller/giangviencontroller.php?action=index",
+      url:
+        "../controller/sosanhcontroller.php?action=getListGiangVienNoExist&ma_gv=" +
+        selectedMaGV,
       type: "GET",
       success: function (response) {
         var data = JSON.parse(response);
@@ -382,6 +381,8 @@ $(document).ready(function () {
       clearColumnsGV(2);
       clearResultColumnsGV();
       $("#tongKetResultGV").text("");
+    } else {
+      toastr.error("Vui lòng chọn một giảng viên.");
     }
   });
 

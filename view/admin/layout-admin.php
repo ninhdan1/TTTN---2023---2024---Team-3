@@ -51,6 +51,7 @@ if (!isset($_SESSION['login'])) {
         <link ref="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
 
 
+
     </head>
 
     <body id="page-top">
@@ -97,7 +98,7 @@ if (!isset($_SESSION['login'])) {
         <!-- Scroll to Top Button-->
         <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
         require VIEW_PATH . 'components/button-page-to-top.php' ?>
-        ?>
+
 
         <!-- Logout Modal-->
         <?php require_once __DIR__ . '/../../Helper/ConfigHelper.php';
@@ -155,6 +156,7 @@ if (!isset($_SESSION['login'])) {
         <script src="/js/datatables/datatables-monhoc.js"></script>
         <script src="/js/datatables/datatables-thongke.js"></script>
         <script src="/js/datatables/datatables-giangvien.js"></script>
+        <script src="/js/datatables/datatable-taikhoan.js"></script>
     </body>
 
 </php>
