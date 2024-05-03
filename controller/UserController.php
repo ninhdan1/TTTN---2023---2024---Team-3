@@ -1,15 +1,22 @@
 <?php
 require_once "../DB/DBConnect.php";
 require_once "../model/User.php";
+
+
+require_once __DIR__ . '/../Helper/ConfigHelper.php';
+require_once  HELPER_PATH . 'ResponseHelper.php';
 session_start();
 class UserController
 {
   private $model;
   private $conn;
+  private $responseHelper;
+
   public function __construct()
   {
     $this->conn = (new DBConnect())->getConnection();
     $this->model = new User($this->conn);
+    $this->responseHelper = new ResponseHelper();
   }
   public function login()
   {
@@ -73,12 +80,17 @@ class UserController
         $_SESSION['login'] = true;
         header("Location: ../view/admin/layout-admin.php");
         exit();
-      } elseif ($user['role'] == 'user') {
+      } elseif ($user['role'] == 'user' && $user['ma_gv'] !== null) {
         $_SESSION['id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['role'] = $user['role'];
+        $_SESSION['ma_gv'] = $user['ma_gv'];
         $_SESSION['login'] = true;
-        header("Location: ../view/user/layout-user.php");
+        header("Location: ../view/thong-ke-canhan.php");
+        exit();
+      } else {
+        $_SESSION['thongbao'] = 'Tài khoản hoặc mật khẩu không đúng';
+        header("Location: ../view/login.php");
         exit();
       }
     } else {
@@ -112,6 +124,7 @@ class UserController
     if (isset($message)) {
       $_SESSION["thongbao"] = $message;
       header("Location: ../view/change-password.php");
+
       exit();
     } else {
       $table = 'tai_khoan';
@@ -130,6 +143,56 @@ class UserController
       }
     }
   }
+
+  public function changePasswordUser()
+  {
+    $id = $_POST['id'];
+    $newPassword = $_POST['newPassword'];
+    $oldPassword = $_POST['oldPassword'];
+    $re_new_password = $_POST['re_new_password'];
+
+    if ($newPassword == "" || $oldPassword == "" || $re_new_password == "") {
+      $message = "Vui lòng nhập đầy đủ thông tin";
+    } elseif (strlen($oldPassword) < 10 || strlen($oldPassword) > 30) {
+      $message = "Mật khẩu cũ không đúng";
+    } elseif (strlen($newPassword) < 10 || strlen($newPassword) > 30) {
+      $message = "Mật khẩu mới không đúng";
+    } elseif (strlen($re_new_password) < 10 || strlen($re_new_password) > 30) {
+      $message = "Mật khẩu nhập lại không đúng";
+    } elseif (!preg_match('/[A-Z]/', $newPassword) || !preg_match('/[^\w]/', $newPassword)) {
+      $message = "Mật khẩu mới phải có ít nhất một chữ hoa và một ký tự đặc biệt";
+    } elseif ($newPassword == $oldPassword) {
+      $message = "Mật khẩu mới không được trùng với mật khẩu cũ";
+    } elseif ($newPassword != $re_new_password) {
+      $message = "Mật khẩu nhập lại không đúng";
+    }
+    if (isset($message)) {
+      $_SESSION["thongbao"] = $message;
+      header("Location: ../view/change-password-user.php");
+
+      exit();
+    } else {
+      $table = 'tai_khoan';
+      $data = [
+        'password' => md5($newPassword),
+      ];
+      $condition = 'id = ?';
+      $result = $this->model->update($table, $data, $condition, $id);
+      if ($result) {
+        header("Location: ../../index.php");
+        exit();
+      } else {
+        $_SESSION["thongbao"] = "Mật khẩu cũ không đúng";
+        header("Location: ../view/change-password-user.php");
+        exit();
+      }
+    }
+  }
+
+
+
+
+
   public function delete()
   {
     $id = $_GET['id'];
@@ -137,11 +200,11 @@ class UserController
     $condition = 'id = ?';
     $result = $this->model->deleteUser($table, $condition, [$id]);
     if ($result) {
-      header("Location: /view/admin/qly_taikhoan.php");
+      header("Location: /view/list_taikhoan.php");
       exit();
     } else {
       $_SESSION["thongbao"] = "Xóa không thành công";
-      header("Location: /view/admin/qly_taikhoan.php");
+      header("Location: /view/admin/list_taikhoan.php");
       exit();
     }
   }
@@ -151,15 +214,10 @@ class UserController
     $password = $_POST['password'];
     $username = $this->xoaKhoangTrang($username);
     $password = $this->xoaKhoangTrang($password);
-    $this->kiemTraTaiKhoanTrung("../view/admin/them_taikhoan.php");
+    $this->kiemTraTaiKhoanTrung("../view/them_taikhoan.php");
     $role = $_POST['role'];
     $status = $_POST['status'];
     $ma_gv = ($_POST['giangvien'] !== "") ? $_POST['giangvien'] : null;
-    if ($ma_gv === null) {
-      $_SESSION["thongbao"] = "Vui lòng chọn giảng viên để thêm";
-      header("Location: /view/admin/them_taikhoan.php");
-      exit();
-    }
 
     $data = [
       'username' => $username,
@@ -171,10 +229,10 @@ class UserController
     $table = 'tai_khoan';
     $result = $this->model->insertUser($table, $data);
     if ($result) {
-      header("Location: /view/admin/qly_taikhoan.php");
+      header("Location: /view/list_taikhoan.php");
       exit();
     } else {
-      header("Location: /view/admin/them_taikhoan.php");
+      header("Location: /view/them_taikhoan.php");
       exit();
     }
   }
@@ -185,29 +243,29 @@ class UserController
     if (isset($_POST['submit'])) {
       if (empty($_POST['username'])) {
         $_SESSION["error_username"] = "Vui lòng nhập tài khoản";
-        header("Location: ../view/admin/them_taikhoan.php");
+        header("Location: ../view/them_taikhoan.php");
         exit();
       }
       if (strlen($username) < 10 || strlen($username) > 15) {
         $_SESSION["error_username"] = "Tài khoản phải có từ 10 đến 15 ký tự";
-        header("Location: ../view/admin/them_taikhoan.php");
+        header("Location: ../view/them_taikhoan.php");
         exit();
       }
 
       if (empty($_POST['password'])) {
         $_SESSION["error_password"] = "Vui lòng nhập mật khẩu";
-        header("Location: ../view/admin/them_taikhoan.php");
+        header("Location: ../view/them_taikhoan.php");
         exit();
       }
       if (strlen($password) < 10 || strlen($password) > 15) {
         $_SESSION["error_password"] = "Mật khẩu phải có từ 10 đến 15 ký tự";
-        header("Location: ../view/admin/them_taikhoan.php");
+        header("Location: ../view/them_taikhoan.php");
         exit();
       }
 
       if (!preg_match('/[A-Z]/', $password) || !preg_match('/[^\w]/', $password)) {
         $_SESSION["error_password"] = "Mật khẩu phải chứa ít nhất một chữ hoa và một ký tự đặc biệt";
-        header("Location: ../view/admin/them_taikhoan.php");
+        header("Location: ../view/them_taikhoan.php");
         exit();
       }
     }
@@ -221,12 +279,16 @@ class UserController
     $password = $this->xoaKhoangTrang($password);
     $table = 'tai_khoan';
     $condition = 'id = ?';
-    $this->kiemTraTaiKhoanTrung("../view/admin/sua_taikhoan.php?id=" . $id);
+    $this->kiemTraTaiKhoanTrung("../view/sua_taikhoan.php?id=" . $id);
     $user_check = $this->model->selectUserID($table, '*', $condition, [$id]);
     if ($user_check['password'] == $password) {
       $role = $_POST['role'];
       $status = $_POST['status'];
-      $ma_gv = $_POST['giangvien'];
+      $ma_gv = isset($_POST['giangvien_disabled']) ? $_POST['giangvien_disabled'] : null;
+      if (empty($ma_gv)) {
+        $ma_gv = null;
+      }
+
       $table = 'tai_khoan';
       $condition = 'id = ?';
       $password = $password;
@@ -239,33 +301,38 @@ class UserController
       ];
       $result = $this->model->update($table, $data, $condition, $id);
       if ($result) {
-        header("Location: /view/admin/qly_taikhoan.php");
+        header("Location: /view/list_taikhoan.php");
         exit();
       } else {
-        header("Location: /view/admin/sua_taikhoan.php");
+        header("Location: /view/list_taikhoan.php");
         exit();
       }
     } else {
       if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
         if (empty($_POST['password'])) {
           $_SESSION["error_password"] = "Vui lòng nhập mật khẩu";
-          header("Location: ../view/admin/sua_taikhoan.php?id=" . $id);
+          header("Location: ../view/sua_taikhoan.php?id=" . $id);
           exit();
         }
         if (strlen($password) < 10 || strlen($password) > 15) {
           $_SESSION["error_password"] = "Mật khẩu phải có từ 10 đến 15 ký tự";
-          header("Location: ../view/admin/sua_taikhoan.php?id=" . $id);
+          header("Location: ../view/sua_taikhoan.php?id=" . $id);
           exit();
         }
         if (!preg_match('/[A-Z]/', $password) || !preg_match('/[^\w]/', $password)) {
           $_SESSION["error_password"] = "Mật khẩu phải chứa ít nhất một chữ hoa và một ký tự đặc biệt";
-          header("Location: ../view/admin/sua_taikhoan.php?id=" . $id);
+          header("Location: ../view/sua_taikhoan.php?id=" . $id);
           exit();
         }
       }
       $role = $_POST['role'];
       $status = $_POST['status'];
-      $ma_gv = $_POST['giangvien'];
+
+      $ma_gv = isset($_POST['giangvien_disabled']) ? $_POST['giangvien_disabled'] : null;
+      if (empty($ma_gv)) {
+        $ma_gv = null;
+      }
+
       $table = 'tai_khoan';
       $condition = 'id = ?';
       $password = md5($password);
@@ -278,10 +345,10 @@ class UserController
       ];
       $result = $this->model->update($table, $data, $condition, $id);
       if ($result) {
-        header("Location: /view/admin/qly_taikhoan.php");
+        header("Location: /view/list_taikhoan.php");
         exit();
       } else {
-        header("Location: /view/admin/sua_taikhoan.php");
+        header("Location: /view/list_taikhoan.php");
         exit();
       }
     }
@@ -294,12 +361,12 @@ class UserController
     if (isset($_POST['submit'])) {
       if (empty($_POST['username'])) {
         $_SESSION["error_username"] = "Vui lòng nhập tài khoản";
-        header("Location: ../view/admin/sua_taikhoan.php?id=" . $id);
+        header("Location: ../view/list_taikhoan.php?id=" . $id);
         exit();
       }
       if (strlen($username) < 10 || strlen($username) > 15) {
         $_SESSION["error_username"] = "Tài khoản phải có từ 10 đến 15 ký tự";
-        header("Location: ../view/admin/sua_taikhoan.php?id=" . $id);
+        header("Location: ../view/list_taikhoan.php?id=" . $id);
         exit();
       }
     }
@@ -323,6 +390,12 @@ class UserController
     return $str;
   }
 
+  public function getAccountbyMagv()
+  {
+    $ma_gv = $_SESSION['ma_gv'] ?? null;
+    $data = $this->model->getAccountByMagv($ma_gv);
+    return $this->responseHelper->Response(true, "Lấy dữ liệu thành công!", $data);
+  }
 }
 $userController = new UserController();
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -332,6 +405,9 @@ switch ($action) {
     break;
   case 'changePassword':
     $userController->changePassword();
+    break;
+  case 'changePasswordUser':
+    $userController->changePasswordUser();
     break;
   case 'delete':
     $userController->delete();
@@ -343,5 +419,10 @@ switch ($action) {
   case 'update':
     $userController->checkUpdate();
     $userController->update();
+  case 'getAccountbyMagv':
+    $userController->getAccountbyMagv();
+    break;
+  default:
+    echo "Action không tồn tại!";
     break;
 }

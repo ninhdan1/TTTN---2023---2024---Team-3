@@ -1,16 +1,21 @@
 <?php
 
-require_once  __DIR__. '/../vendor/autoload.php';
+require_once __DIR__ . '/../Helper/ConfigHelper.php';
+
+require_once VENDOR_PATH . 'autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class ImportFileExcel
 {
     private $conn;
-    public function __construct($conn) {
+    public function __construct($conn)
+    {
         $this->conn = $conn;
     }
 
-    public function importData($excelFile) {
+    public function importData($excelFile)
+    {
         $data = [];
 
         // Load file Excel
@@ -32,4 +37,3 @@ class ImportFileExcel
         return $data;
     }
 }
-?>
