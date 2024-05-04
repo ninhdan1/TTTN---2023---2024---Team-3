@@ -8,7 +8,7 @@ $content = '
     
 </div>
 <div class="col">
-<span class="badge rounded-pill text-bg-danger mb-3"> <a href="" class="text-decoration-none text-light"> Trang chủ </a></span>
+<span class="badge rounded-pill text-bg-danger mb-3"> <a href="/view/admin/layout-admin.php" class="text-decoration-none text-light"> Trang chủ </a></span>
 <span class="badge rounded-pill text-bg-light mb-3"> <strong> <i class="bi bi-caret-right-fill"></i> </strong> </span>
 <span class="badge rounded-pill text-bg-info mb-3">  Thống kê khối lượng </span>
 </div>

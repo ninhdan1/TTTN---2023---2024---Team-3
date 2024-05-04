@@ -38,12 +38,8 @@ class MonHocController
     public function getDetailByID($maMonHoc)
     {
         $detailData  = $this->model->getDetailByID($maMonHoc);
-        if (is_array($detailData)) {
-            header('Content-Type: application/json');
-            echo json_encode($detailData);
-        } else {
-            echo "Không thể lấy dữ liệu chi tiết!";
-        }
+
+        return $this->responseHelper->Response(true, "Lấy dữ liệu thành công!", $detailData);
     }
 
     public function update()
@@ -82,7 +78,7 @@ class MonHocController
         $result = $this->model->updateMonHocByID($maMonHoc, $data);
 
         if ($result) {
-            return $this->responseHelper->Response(true, "Cập nhật thành công!", $data);
+            return $this->responseHelper->Response(true, "Cập nhật dữ liệu thành công!", $data);
         }
     }
 

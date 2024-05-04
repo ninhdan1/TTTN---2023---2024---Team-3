@@ -28,7 +28,6 @@ $(document).ready(function () {
           });
 
           $("#maGiangVien").html(html);
-          $("#maGiangVien").selectpicker("refresh");
         }
       },
       error: function (xhr, status, error) {
@@ -57,7 +56,6 @@ $(document).ready(function () {
           });
 
           $("#maMonHoc").html(html);
-          $("#maMonHoc").selectpicker("refresh");
         }
       },
     });
@@ -101,14 +99,12 @@ $(document).ready(function () {
     );
     $("#thucHanhLayout, #lyThuyetThucHanhLayout, #doAnLayout").hide();
     $("#thongKeTongHopLayout").show();
-    thongKeKhoiLuongGiangDay(null);
+    thongKeKhoiLuongGiangDay("");
   });
 
   $("#maHocKy").change(function () {
     var maHocKyValue = $(this).val();
-    thongKeKhoiLuongGiangDay(null);
-    $("#maGiangVien").empty();
-    $("#maMonHoc").empty();
+    thongKeKhoiLuongGiangDay("");
 
     loadGiangVienList(maHocKyValue);
     loadMonHocList(maHocKyValue);
@@ -122,7 +118,7 @@ $(document).ready(function () {
         var data = JSON.parse(response);
         if (data.success) {
           $("#maHocKy").val(data.data[0].ma_hocky);
-          thongKeKhoiLuongGiangDay(null);
+          thongKeKhoiLuongGiangDay("");
         } else {
           // Handle error
           console.log(data.message);
@@ -135,7 +131,7 @@ $(document).ready(function () {
     });
   }
 
-  function thongKeKhoiLuongGiangDay(loaiMonHoc = null) {
+  function thongKeKhoiLuongGiangDay(loaiMonHoc = "") {
     var maHocKyValue = $("#maHocKy").val();
 
     var maGiangVienValue = "";
@@ -176,6 +172,7 @@ $(document).ready(function () {
                 html += "<td><strong>" + item.ten_monhoc + "</strong></td>"; // Tên môn học
 
                 displayedSubjects[item.ten_monhoc] = true;
+                index++;
               } else {
                 html += "<td></td>";
                 html += "<td></td>";
@@ -218,10 +215,10 @@ $(document).ready(function () {
 
               html += "</tr>";
 
-              // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
-              if (!(item.ten_monhoc in displayedSubjects)) {
-                index++;
-              }
+              // // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
+              // if (!(item.ten_monhoc in displayedSubjects)) {
+              //   index++;
+              // }
             });
 
             $("#thucHanhTable").DataTable().destroy();
@@ -232,7 +229,6 @@ $(document).ready(function () {
           if (loaiMonHoc == "lt_pm") {
             var html = "";
             var displayedSubjects = {}; // Lưu trữ các môn học đã được hiển thị
-            var rowCount = {}; // Đếm số lượng hàng cần rowspan cho cột môn học
             var index = 1; // Số thứ tự ban đầu
 
             data.data.forEach(function (item) {
@@ -271,10 +267,10 @@ $(document).ready(function () {
 
               html += "</tr>";
 
-              // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
-              if (!(item.ten_monhoc in displayedSubjects)) {
-                index++;
-              }
+              // // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
+              // if (!(item.ten_monhoc in displayedSubjects)) {
+              //   index++;
+              // }
             });
 
             // Destroy the existing DataTable
@@ -301,6 +297,7 @@ $(document).ready(function () {
                 html += "<td><strong>" + item.ten_monhoc + "</strong></td>"; // Tên môn học
 
                 displayedSubjects[item.ten_monhoc] = true;
+                index++;
               } else {
                 html += "<td></td>";
                 html += "<td></td>";
@@ -341,11 +338,6 @@ $(document).ready(function () {
               html += "<td>" + " " + "</td>";
 
               html += "</tr>";
-
-              // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
-              if (!(item.ten_monhoc in displayedSubjects)) {
-                index++;
-              }
             });
 
             // Destroy the existing DataTable
@@ -358,11 +350,9 @@ $(document).ready(function () {
             initializeDataTable("doAnTable");
           }
 
-          if (loaiMonHoc == null) {
+          if (loaiMonHoc == "") {
             var html = "";
             var displayedSubjects = {}; // Lưu trữ các môn học đã được hiển thị
-            var displayedLoaiMonHoc = {}; // Lưu trữ các loại môn học đã được hiển thị
-            var disabledHocKyMonHoc = {}; // Lưu trữ các học kỳ môn học đã được hiển thị
 
             var index = 1; // Số thứ tự ban đầu
 
@@ -375,6 +365,7 @@ $(document).ready(function () {
                 html += "<td><strong>" + item.ten_monhoc + "</strong></td>"; // Tên môn học
 
                 displayedSubjects[item.ten_monhoc] = true;
+                index++;
               } else {
                 html += "<td></td>";
                 html += "<td></td>";
@@ -411,38 +402,30 @@ $(document).ready(function () {
                   parseInt(item.so_tiet) +
                 "</td>";
 
-              if (!(item.loai_monhoc in displayedLoaiMonHoc)) {
-                var loaiMonHoc = "";
-                if (item.loai_monhoc === "pm") {
-                  loaiMonHoc = "Thực hành";
-                } else if (item.loai_monhoc === "doan") {
-                  loaiMonHoc = "Đồ án bài tập lớn";
-                } else if (item.loai_monhoc === "lt_pm") {
-                  loaiMonHoc = "Lý thuyết tại phòng máy";
-                } else {
-                  loaiMonHoc = "";
-                }
-
-                html += "<td>" + loaiMonHoc + "</td>";
-
-                displayedLoaiMonHoc[item.loai_monhoc] = true;
+              var loaiMonHoc = "";
+              if (item.loai_monhoc === "pm") {
+                loaiMonHoc = "Thực hành";
+              } else if (item.loai_monhoc === "doan") {
+                loaiMonHoc = "Đồ án - bài tập lớn";
+              } else if (item.loai_monhoc === "lt_pm") {
+                loaiMonHoc = "Lý thuyết tại phòng máy";
               } else {
-                html += "<td></td>";
+                loaiMonHoc = "";
               }
 
-              if (!(item.hoc_ky_monhoc in disabledHocKyMonHoc)) {
+              html += "<td>" + loaiMonHoc + "</td>";
+
+              if (item.hoc_ky_monhoc !== "") {
                 html += "<td>" + item.hoc_ky_monhoc + "</td>";
-                disabledHocKyMonHoc[item.hoc_ky_monhoc] = true;
               } else {
-                html += "<td></td>";
+                html += "<td>" + " " + "</td>";
               }
 
               html += "</tr>";
 
-              // Tăng số thứ tự cho mỗi hàng mới, chỉ khi không có môn học trùng lặp
-              if (!(item.ten_monhoc in displayedSubjects)) {
-                index++;
-              }
+              // if (!(item.ten_monhoc in displayedSubjects)) {
+              //   index++;
+              // }
             });
 
             $("#thongKeTongHopTable").DataTable().destroy();
