@@ -44,4 +44,13 @@ class SoSanh
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function getListGiangVienNoExist($maGiangVien)
+    {
+        $sql = "SELECT * FROM giang_vien WHERE ma_gv != ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$maGiangVien]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
